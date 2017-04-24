@@ -31,7 +31,7 @@ export function subscribeToMessages() {
       }
       dispatch(addMessageSuccess(message));
     })
-    // .catch(error => {
+    // .catch((error) => {
     //   console.log(error);
     //   dispatch(addMessageError());
     // });
@@ -39,7 +39,7 @@ export function subscribeToMessages() {
     messageRef.on('child_removed', snapshot => {
       dispatch(removeMessageSuccess(snapshot.key));
     })
-    // .catch(error => {
+    // .catch((error) => {
     //   console.log(error);
     //   dispatch(removeMessageError());
     // });
@@ -50,6 +50,10 @@ export function addMessage(message) {
     messageRef.push({
       text: message,
       author: 'anonymous'
+    })
+    .catch(error => {
+    console.log(error);
+    dispatch(addMessageError());
     });
   }
 }
@@ -61,16 +65,16 @@ function addMessageSuccess(message) {
   };
 }
 
-// function addMessageError() {
-//   return {
-//     type: 'ADD_MESSAGE_ERROR'
-//   };
-// }
+function addMessageError() {
+  return {
+    type: 'ADD_MESSAGE_ERROR'
+  };
+}
 
 export function removeMessage(id) {
   return dispatch => {
     messageRef.child(id).remove();
-  }
+  };
 }
 
 function removeMessageSuccess(id) {
@@ -80,8 +84,8 @@ function removeMessageSuccess(id) {
   };
 }
 
-// function removeMessageError() {
-//   return {
-//     type: 'ADD_MESSAGE_ERROR'
-//   };
-// }
+function removeMessageError() {
+  return {
+    type: 'REMOVE_MESSAGE_ERROR'
+  };
+}

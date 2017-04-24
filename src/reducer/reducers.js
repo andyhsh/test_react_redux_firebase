@@ -1,18 +1,25 @@
 // state structure
+
+// firebase.ref(/room + roomId)
+
 // state = {
-//   room: {
-//     currentRoom: {},
-//     rooms: [ example123, example123, example123 ]
-//   },
-//   messages: [
-//     { message: 123, prop: 123, prop: 123, room: example123 },
-//     { message: 123, prop: 123, prop: 123, room: example123 },
-//     { message: 123, prop: 123, prop: 123, room: example123 },
+//   room: [
+//     exampleRoom123: [
+//       {title: '', videoId: '', user: '', priority: number},
+//       {title: '', videoId: '', user: '', priority: number},
+//       {title: '', videoId: '', user: '', priority: number},
+//     ],
+//     exampleRoom234: [
+//       {title: '', videoId: '', user: '', priority: number},
+//       {title: '', videoId: '', user: '', priority: number},
+//       {title: '', videoId: '', user: '', priority: number},
+//     ],
+//     exampleRoom345: [
+//       {title: '', videoId: '', user: '', priority: number},
+//       {title: '', videoId: '', user: '', priority: number},
+//       {title: '', videoId: '', user: '', priority: number},
+//     ],
 //   ]
-// }
-//
-// state = {
-//   room: {}
 // }
 
 export const messagesReducer = (state = [], action) => {

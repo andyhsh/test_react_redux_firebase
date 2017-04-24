@@ -19,7 +19,7 @@ class AddMessage extends Component {
   }
 
   handleSubmit(e) {
-    e.nativeEvent.preventDefault();
+    e.preventDefault();
     this.props.addMessage(this.state.message);
   }
 
