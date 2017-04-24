@@ -8,7 +8,6 @@ class Message extends Component {
 
   handleSubmit(e) {
     e.nativeEvent.preventDefault();
-    debugger;
     this.props.removeMessage(this.props.id);
   }
 
