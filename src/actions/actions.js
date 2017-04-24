@@ -21,8 +21,13 @@ function fetchMessagesSuccess(fetchedMessages) {
 
 export function subscribeToMessages() {
   return dispatch => {
+    console.log('subscribing to messages');
     messageRef.on('child_added', snapshot => {
-      dispatch(addMessageSuccess(snapshot.val()));
+      const message = {
+        id: snapshot.key,
+        text: snapshot.val(),
+      }
+      dispatch(addMessageSuccess(message));
     })
     // .catch(error => {
     //   console.log(error);
@@ -38,7 +43,6 @@ export function subscribeToMessages() {
     // });
   };
 }
-// message object = { text: '', author: 'anonymous'}
 export function addMessage(message) {
   return dispatch => {
     messageRef.push(message);
@@ -58,10 +62,16 @@ function addMessageSuccess(message) {
 //   };
 // }
 
-function removeMessageSuccess(message) {
+export function removeMessage(id) {
+  return dispatch => {
+    messageRef.remove(id);
+  }
+}
+
+function removeMessageSuccess(id) {
   return {
-    type: 'ADD_MESSAGE_SUCCESS',
-    payload: message
+    type: 'REMOVE_MESSAGE_SUCCESS',
+    payload: id
   };
 }
 

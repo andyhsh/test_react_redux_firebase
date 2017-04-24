@@ -1,11 +1,24 @@
 import React, { Component } from 'react';
 
 class Message extends Component {
+  constructor(props){
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit(e) {
+    e.nativeEvent.preventDefault();
+    debugger;
+    this.props.removeMessage(this.props.id);
+  }
 
   render() {
     return (
       <div>
-        author: {this.props.author}, text: {this.props.text}
+        <p>
+          author: {this.props.author}, text: {this.props.text}
+          <button type='submit' onClick={this.handleSubmit}>Delete</button>
+        </p>
       </div>
     );
   }

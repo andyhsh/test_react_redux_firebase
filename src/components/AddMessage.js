@@ -20,11 +20,7 @@ class AddMessage extends Component {
 
   handleSubmit(e) {
     e.nativeEvent.preventDefault();
-    const message = {
-      text: this.state.message,
-      author: 'anonymous',
-    }
-    this.props.addMessage(message);
+    this.props.addMessage(this.state.message);
   }
 
 
