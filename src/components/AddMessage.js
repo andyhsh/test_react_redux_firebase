@@ -20,7 +20,7 @@ class AddMessage extends Component {
 
   handleSubmit(e) {
     e.nativeEvent.preventDefault();
-    this.props.addMessage(this.state.message);
+    this.props.addMessage(this.state.message, this.props.roomId);
   }
 
 
@@ -36,7 +36,7 @@ class AddMessage extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addMessage: (message) => { dispatch(addMessage(message)); },
+    addMessage: (message, roomId) => { dispatch(addMessage(message, roomId)); },
   };
 };
 

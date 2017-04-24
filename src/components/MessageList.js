@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Message from './Message';
-import { subscribeToMessages, fetchMessages, removeMessage } from '../actions/actions';
+import { subscribeToMessages, removeMessage, joinRoom, exitRoom } from '../actions/actions';
 
 class MessageList extends Component {
 
+  // Toggle on and off subscription, second parameter coming from URL 'this.props.match.params.id'
   componentDidMount() {
-    this.props.subscribeToMessages(true);
+    this.props.subscribeToMessages(true, this.props.roomId);
+    this.props.joinRoom(this.props.roomId);
   }
 
   componentWillUnmount() {
-    this.props.subscribeToMessages(false);
+    this.props.subscribeToMessages(false, this.props.roomId);
+    this.props.exitRoom();
   }
 
   renderMessages() {
@@ -38,9 +41,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    subscribeToMessages: (toggle) => { dispatch(subscribeToMessages(toggle)); },
-    fetchMessages: () => { dispatch(fetchMessages()); },
+    subscribeToMessages: (toggle, roomId) => { dispatch(subscribeToMessages(toggle, roomId)); },
     removeMessage: (id) => { dispatch(removeMessage(id)); },
+    joinRoom: (roomId) => { dispatch(joinRoom(roomId)); },
+    exitRoom: () => { dispatch(exitRoom()); },
   };
 };
 

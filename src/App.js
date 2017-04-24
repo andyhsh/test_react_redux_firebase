@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router,
-  Link,
   Route,
   Switch
 } from 'react-router-dom';
@@ -24,13 +23,15 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div>
+            {/*
             <ul>
               <li><Link to='/'>Home</Link></li>
               <li><Link to='/room'>Room</Link></li>
             </ul>
+            */}
             <Switch>
               <Route exact path='/' component={Home} />
-              <Route exact path='/room' component={Room} />
+              <Route path='/:room' component={Room} />
               <Route component={NotFound} />
             </Switch>
           </div>

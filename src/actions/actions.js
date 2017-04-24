@@ -1,7 +1,7 @@
 import firebase from './firebase';
 
 const firebaseDB = firebase.database();
-const messageRef = firebaseDB.ref('/messages');
+//const messageRef = firebaseDB.ref(`/Rooms/${roomId}`);
 
 // export function fetchMessages() {
 //   return dispatch => {
@@ -19,8 +19,10 @@ const messageRef = firebaseDB.ref('/messages');
 //   }
 // }
 
-export function subscribeToMessages(toggle) {
+export function subscribeToMessages(toggle, roomId) {
   return dispatch => {
+  const messageRef = firebaseDB.ref(`/rooms/${roomId}`);
+  debugger;
     if (toggle === true) {
       console.log('subscribing to messages');
       messageRef.on('child_added', snapshot => {
@@ -45,8 +47,11 @@ export function subscribeToMessages(toggle) {
     }
   };
 }
-export function addMessage(message) {
+// middleware to update firebase database first
+export function addMessage(message, roomId) {
   return dispatch => {
+  debugger;
+  const messageRef = firebaseDB.ref(`/rooms/${roomId}`);
     messageRef.push({
       text: message,
       author: 'anonymous'
@@ -58,6 +63,7 @@ export function addMessage(message) {
   }
 }
 
+// update individual user redux state
 function addMessageSuccess(message) {
   return {
     type: 'ADD_MESSAGE_SUCCESS',
@@ -71,12 +77,15 @@ function addMessageError() {
   };
 }
 
-export function removeMessage(id) {
+// middleware to update firebase database first
+export function removeMessage(id, roomId) {
   return dispatch => {
+    const messageRef = firebaseDB.ref(`/rooms/${roomId}`);
     messageRef.child(id).remove();
   };
 }
 
+// update individual user redux state
 function removeMessageSuccess(id) {
   return {
     type: 'REMOVE_MESSAGE_SUCCESS',
@@ -90,8 +99,24 @@ function removeMessageError() {
   };
 }
 
+// update individual user redux state
 function resetState() {
   return {
     type: 'RESET_STATE'
+  };
+}
+
+/* ACTIONS FOR ROOM REDUCER */
+
+export function joinRoom(roomId) {
+  return {
+    type: 'JOIN_ROOM',
+    payload: roomId
+  };
+}
+
+export function exitRoom() {
+  return {
+    type: 'EXIT_ROOM'
   };
 }
