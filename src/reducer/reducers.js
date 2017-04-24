@@ -46,13 +46,13 @@ export const messagesReducer = (state = [], action) => {
 };
 
 // data structure = {id: '' name: ''}
-export const roomReducer = (state = {}, action) => {
+export const roomReducer = (state = '', action) => {
   switch (action.type) {
     case 'JOIN_ROOM':
-      return action.payload;
+      return action.payload
     case 'EXIT_ROOM':
-      return {};
+      return '';
     default:
-      return {};
+      return state;
   }
 };

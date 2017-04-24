@@ -5,7 +5,7 @@ import { addMessage } from '../actions/actions';
 class AddMessage extends Component {
   constructor(props){
     super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.state = {
       message: ''
@@ -18,7 +18,7 @@ class AddMessage extends Component {
     });
   }
 
-  handleSubmit(e) {
+  handleClick(e) {
     e.nativeEvent.preventDefault();
     this.props.addMessage(this.state.message, this.props.roomId);
   }
@@ -28,7 +28,7 @@ class AddMessage extends Component {
     return (
       <form>
         <input type='text' name='message' onChange={this.handleChange} />
-        <button type='submit' onClick={this.handleSubmit}>Add</button>
+        <button type='submit' onClick={this.handleClick}>Add</button>
       </form>
     );
   }

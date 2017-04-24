@@ -22,7 +22,6 @@ const firebaseDB = firebase.database();
 export function subscribeToMessages(toggle, roomId) {
   return dispatch => {
   const messageRef = firebaseDB.ref(`/rooms/${roomId}`);
-  debugger;
     if (toggle === true) {
       console.log('subscribing to messages');
       messageRef.on('child_added', snapshot => {
@@ -50,7 +49,6 @@ export function subscribeToMessages(toggle, roomId) {
 // middleware to update firebase database first
 export function addMessage(message, roomId) {
   return dispatch => {
-  debugger;
   const messageRef = firebaseDB.ref(`/rooms/${roomId}`);
     messageRef.push({
       text: message,
@@ -107,7 +105,6 @@ function resetState() {
 }
 
 /* ACTIONS FOR ROOM REDUCER */
-
 export function joinRoom(roomId) {
   return {
     type: 'JOIN_ROOM',
