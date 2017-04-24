@@ -40,6 +40,9 @@ export const messagesReducer = (state = [], action) => {
       newState.splice(indexToDelete, 1);
       return newState;
 
+    case 'RESET_STATE':
+      return [];
+
     default:
       return state;
   }

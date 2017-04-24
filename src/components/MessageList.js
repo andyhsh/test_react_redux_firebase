@@ -6,8 +6,11 @@ import { subscribeToMessages, fetchMessages, removeMessage } from '../actions/ac
 class MessageList extends Component {
 
   componentDidMount() {
-    // this.props.fetchMessages();
-    this.props.subscribeToMessages();
+    this.props.subscribeToMessages(true);
+  }
+
+  componentWillUnmount() {
+    this.props.subscribeToMessages(false);
   }
 
   renderMessages() {
@@ -35,7 +38,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    subscribeToMessages: () => { dispatch(subscribeToMessages()); },
+    subscribeToMessages: (toggle) => { dispatch(subscribeToMessages(toggle)); },
     fetchMessages: () => { dispatch(fetchMessages()); },
     removeMessage: (id) => { dispatch(removeMessage(id)); },
   };

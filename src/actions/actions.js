@@ -19,30 +19,30 @@ const messageRef = firebaseDB.ref('/messages');
 //   }
 // }
 
-export function subscribeToMessages() {
+export function subscribeToMessages(toggle) {
   return dispatch => {
-    console.log('subscribing to messages');
-    messageRef.on('child_added', snapshot => {
-      // flatten firebase object for redux state
-      const message = {
-        id: snapshot.key,
-        text: snapshot.val().text,
-        author: snapshot.val().author,
-      }
-      dispatch(addMessageSuccess(message));
-    })
-    // .catch((error) => {
-    //   console.log(error);
-    //   dispatch(addMessageError());
-    // });
+    if (toggle === true) {
+      console.log('subscribing to messages');
+      messageRef.on('child_added', snapshot => {
+        // flatten firebase object for redux state
+        const message = {
+          id: snapshot.key,
+          text: snapshot.val().text,
+          author: snapshot.val().author,
+        }
+        dispatch(addMessageSuccess(message));
+      })
 
-    messageRef.on('child_removed', snapshot => {
-      dispatch(removeMessageSuccess(snapshot.key));
-    })
-    // .catch((error) => {
-    //   console.log(error);
-    //   dispatch(removeMessageError());
-    // });
+      messageRef.on('child_removed', snapshot => {
+        dispatch(removeMessageSuccess(snapshot.key));
+      })
+    } else if (toggle === false) {
+      console.log('unsubscribing to messages');
+      // reset state and turn off all firebase event listeners
+      messageRef.off('child_added');
+      messageRef.off('child_removed');
+      dispatch(resetState());
+    }
   };
 }
 export function addMessage(message) {
@@ -87,5 +87,11 @@ function removeMessageSuccess(id) {
 function removeMessageError() {
   return {
     type: 'REMOVE_MESSAGE_ERROR'
+  };
+}
+
+function resetState() {
+  return {
+    type: 'RESET_STATE'
   };
 }
