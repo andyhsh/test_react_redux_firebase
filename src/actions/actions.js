@@ -167,3 +167,39 @@ export function exitRoom() {
     type: 'EXIT_ROOM'
   };
 }
+
+/* ACTIONS FOR USER REDUCER */
+export function signIn(){
+  return dispatch => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    firebase.auth().signInWithPopup(provider).then(function(result) {
+      const { uid, displayName, email } = result.user;
+
+      // update firebase with signed in user details
+      firebase.database().ref(`users/${uid}`).set({
+        displayName,
+        email
+      })
+      // update redux state
+      dispatch(signInSuccess(displayName));
+    }).catch(function(error) {
+      const errorMessage = error.message;
+      dispatch(signInError(errorMessage));
+    });
+  }
+}
+
+function signInError(errorMessage){
+  return {
+    type: 'SIGN_IN_ERROR',
+    payload: errorMessage,
+  }
+}
+
+function signInSuccess(displayName){
+  return {
+    type: 'SIGN_IN_SUCCESS',
+    payload: displayName,
+  }
+}

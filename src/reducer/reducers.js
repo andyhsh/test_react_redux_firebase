@@ -67,9 +67,35 @@ export const messagesReducer = (state = [], action) => {
 export const roomReducer = (state = '', action) => {
   switch (action.type) {
     case 'JOIN_ROOM':
-      return action.payload
+      return action.payload;
     case 'EXIT_ROOM':
       return '';
+    default:
+      return state;
+  }
+};
+
+const userInitialState = {
+  displayName: 'Anonymous',
+  isUserSignedIn: false,
+  hasError: false,
+  errorMessage: '',
+}
+
+export const userReducer = (state = userInitialState, action) => {
+  switch (action.type) {
+    case 'SIGN_IN_SUCCESS':
+      return {
+        ...state,
+        isUserSignedIn: true,
+        displayName: action.payload,
+      }
+    case 'SIGN_IN_ERROR':
+      return {
+        ...state,
+        hasError: true,
+        errorMessage: action.payload,
+      }
     default:
       return state;
   }
