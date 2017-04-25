@@ -171,6 +171,7 @@ export function exitRoom() {
 /* ACTIONS FOR USER REDUCER */
 export function signIn(){
   return dispatch => {
+
     const provider = new firebase.auth.GoogleAuthProvider();
 
     firebase.auth().signInWithPopup(provider).then(function(result) {
@@ -184,8 +185,7 @@ export function signIn(){
       // update redux state
       dispatch(signInSuccess(displayName));
     }).catch(function(error) {
-      const errorMessage = error.message;
-      dispatch(signInError(errorMessage));
+      dispatch(signInError(error.message));
     });
   }
 }
@@ -200,6 +200,30 @@ function signInError(errorMessage){
 function signInSuccess(displayName){
   return {
     type: 'SIGN_IN_SUCCESS',
+    payload: displayName,
+  }
+}
+
+export function signOut(){
+  return dispatch => {
+    firebase.auth().signOut().then(function() {
+      dispatch(signOutSuccess());
+    }).catch(function(error) {
+      dispatch(signOutError(error.message));
+    });
+  }
+}
+
+function signOutError(errorMessage){
+  return {
+    type: 'SIGN_OUT_ERROR',
+    payload: errorMessage,
+  }
+}
+
+function signOutSuccess(displayName){
+  return {
+    type: 'SIGN_OUT_SUCCESS',
     payload: displayName,
   }
 }

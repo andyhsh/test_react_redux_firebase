@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { signIn } from '../actions/actions';
+import { signIn, signOut } from '../actions/actions';
 
 class SignInButton extends Component {
   constructor(props){
@@ -9,14 +9,19 @@ class SignInButton extends Component {
   }
 
   handleClick() {
-    console.log('sign in!');
-    this.props.signIn()
+    if (this.props.user.isUserSignedIn) {
+      console.log('sign out!');
+      this.props.signOut();
+    } else {
+      console.log('sign in!');
+      this.props.signIn();
+    }
   }
 
   render(){
     return (
       <button onClick={this.handleClick}>
-        {this.props.user.isUserSignedInSign ? 'Log out' : 'Log in'}
+        {this.props.user.isUserSignedIn ? 'Log out' : 'Log in'}
       </button>
     )
   }
@@ -30,7 +35,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signIn: () => { dispatch(signIn()); }
+    signIn: () => { dispatch(signIn()); },
+    signOut: () => { dispatch(signOut()); }
   };
 };
 

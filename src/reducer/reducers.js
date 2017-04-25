@@ -96,6 +96,18 @@ export const userReducer = (state = userInitialState, action) => {
         hasError: true,
         errorMessage: action.payload,
       }
+    case 'SIGN_OUT_SUCCESS':
+      return {
+        ...state,
+        isUserSignedIn: false,
+        displayName: 'Anonymous',
+      }
+      case 'SIGN_OUT_ERROR':
+        return {
+          ...state,
+          hasError: true,
+          errorMessage: action.payload,
+        }
     default:
       return state;
   }
