@@ -139,7 +139,9 @@ function resetState() {
   };
 }
 
-/* ACTIONS FOR ROOM REDUCER */
+/* * *
+ * ACTIONS FOR ROOM REDUCER
+ * * */
 export function joinRoom(roomId) {
   return {
     type: 'JOIN_ROOM',
@@ -153,7 +155,9 @@ export function exitRoom() {
   };
 }
 
-/* ACTIONS FOR USER REDUCER */
+/* * *
+ * SIGN IN ACTIONS
+ * * */
 export function signIn(){
   return dispatch => {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -188,6 +192,9 @@ function signInSuccess(displayName){
   }
 }
 
+/* * *
+ * SIGN OUT ACTIONS
+ * * */
 export function signOut(){
   return dispatch => {
     firebase.auth().signOut().then(function() {

@@ -19,7 +19,17 @@ class MessageList extends Component {
   renderMessages() {
     return this.props.messages.map((message, index) => {
       return (
-        <Message key={index} roomId={this.props.roomId} id={message.id} text={message.text} user={message.user}  userId={this.props.user.uid} removeMessage={this.props.removeMessage} starMessage={this.props.starMessage}/>
+        <Message
+          key={index}
+          roomId={this.props.roomId}
+          id={message.id}
+          text={message.text}
+          user={message.user}
+          userId={this.props.user.uid}
+          currentUser={this.props.user.displayName}
+          removeMessage={this.props.removeMessage}
+          starMessage={this.props.starMessage}
+        />
       )
     })
   }

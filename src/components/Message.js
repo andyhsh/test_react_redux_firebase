@@ -8,13 +8,17 @@ class Message extends Component {
   }
 
   handleDelete(e) {
-    e.preventDefault();
     this.props.removeMessage(this.props.id, this.props.roomId);
   }
 
   handleStar(e) {
-    e.preventDefault();
     this.props.starMessage(this.props.id, this.props.roomId, this.props.userId);
+  }
+
+  renderStar() {
+    if (this.props.currentUser !== 'Anonymous') {
+      return <button type='submit' onClick={this.handleStar}>Star</button>
+    }
   }
 
   render() {
@@ -23,7 +27,7 @@ class Message extends Component {
         <p>
           user: {this.props.user}, text: {this.props.text}
           <button type='submit' onClick={this.handleDelete}>Delete</button>
-          <button type='submit' onClick={this.handleStar}>Star</button>
+          {this.renderStar()}
         </p>
       </div>
     );

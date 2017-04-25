@@ -19,7 +19,15 @@
 //       {title: '', videoId: '', user: '', starCount: number},
 //       {title: '', videoId: '', user: '', starCount: number},
 //     ],
-//   ]
+//   ],
+//    user: {
+//      displayName: 'Anonymous',
+//      uid: '',
+//      isUserSignedIn: false,
+//      hasError: false,
+//      errorMessage: '',
+//    },
+//    room: ''
 // }
 
 export const messagesReducer = (state = [], action) => {
