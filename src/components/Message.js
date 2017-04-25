@@ -4,6 +4,7 @@ class Message extends Component {
   constructor(props){
     super(props);
     this.handleStar = this.handleStar.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   handleDelete(e) {

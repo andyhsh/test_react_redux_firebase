@@ -36,14 +36,30 @@ export function subscribeToMessages(toggle, roomId) {
         dispatch(addMessageSuccess(message));
       })
 
+      // listen for delete in message and return the deleted message's unique ID
       messageRef.on('child_removed', snapshot => {
         dispatch(removeMessageSuccess(snapshot.key));
       })
+
+      // listen for changes in starCount and return the updated starCount
+      messageRef.on('child_changed', snapshot => {
+        const updatedStarCountMessage = {
+          id: snapshot.key,
+          starCount: snapshot.val().starCount
+        };
+        dispatch(sortMessageSuccess(updatedStarCountMessage));
+      })
+
+      messageRef.once('value', snapshot => {
+        dispatch(sortMessageSuccess());
+      })
+
     } else if (toggle === false) {
       console.log('unsubscribing to messages');
       // reset state and turn off all firebase event listeners
       messageRef.off('child_added');
       messageRef.off('child_removed');
+      messageRef.off('value');
       dispatch(resetState());
     }
   };
@@ -102,12 +118,18 @@ function removeMessageError() {
   };
 }
 
+function sortMessageSuccess(updatedStarCountMessage) {
+  return {
+    type: 'SORT_MESSAGE_SUCCESS',
+    payload: updatedStarCountMessage,
+  };
+}
+
 // Star by users. Each individual user can only star a song ONCE.
 // Keep track of total stars a song has received through message.stars
 export function starMessage(user, id, roomId){
   return dispatch => {
     const messageRef = firebaseDB.ref(`/rooms/${roomId}`);
-    debugger;
     messageRef.child(id).transaction(message => {
       if (message) {
         // check whether user has starred the message already
