@@ -30,6 +30,8 @@ export function subscribeToMessages(toggle, roomId) {
           id: snapshot.key,
           text: snapshot.val().text,
           author: snapshot.val().author,
+          stars: snapshot.val().stars,
+          starCount: snapshot.val().starCount,
         }
         dispatch(addMessageSuccess(message));
       })
@@ -52,7 +54,10 @@ export function addMessage(message, roomId) {
   const messageRef = firebaseDB.ref(`/rooms/${roomId}`);
     messageRef.push({
       text: message,
-      author: 'anonymous'
+      author: 'anonymous',
+      // stars: { userId: null/true, userId: null/true ...}
+      stars: { user: 'bool' },
+      starCount: 0,
     })
     .catch(error => {
     console.log(error);
@@ -94,6 +99,29 @@ function removeMessageSuccess(id) {
 function removeMessageError() {
   return {
     type: 'REMOVE_MESSAGE_ERROR'
+  };
+}
+
+// Star by users. Each individual user can only star a song ONCE.
+// Keep track of total stars a song has received through message.stars
+export function starMessage(user, id, roomId){
+  return dispatch => {
+    const messageRef = firebaseDB.ref(`/rooms/${roomId}`);
+    debugger;
+    messageRef.child(id).transaction(message => {
+      if (message) {
+        // check whether user has starred the message already
+        // If the user has starred it already, "unstar" it
+        if (message.stars[user]) {
+          message.starCount--;
+          message.stars[user] = null;
+        } else {
+          message.starCount++;
+          message.stars[user] = true;
+        }
+      }
+      return message;
+    });
   };
 }
 

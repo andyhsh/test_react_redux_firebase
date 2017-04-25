@@ -23,12 +23,6 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div>
-            {/*
-            <ul>
-              <li><Link to='/'>Home</Link></li>
-              <li><Link to='/room'>Room</Link></li>
-            </ul>
-            */}
             <Switch>
               <Route exact path='/' component={Home} />
               <Route path='/:room' component={Room} />

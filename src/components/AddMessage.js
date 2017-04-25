@@ -19,7 +19,7 @@ class AddMessage extends Component {
   }
 
   handleClick(e) {
-    e.nativeEvent.preventDefault();
+    e.preventDefault();
     this.props.addMessage(this.state.message, this.props.roomId);
   }
 

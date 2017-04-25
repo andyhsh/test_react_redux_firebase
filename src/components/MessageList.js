@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Message from './Message';
-import { subscribeToMessages, removeMessage, joinRoom, exitRoom } from '../actions/actions';
+import { subscribeToMessages, removeMessage, starMessage, joinRoom, exitRoom } from '../actions/actions';
 
 class MessageList extends Component {
 
@@ -19,7 +19,7 @@ class MessageList extends Component {
   renderMessages() {
     return this.props.messages.map((message, index) => {
       return (
-        <Message key={index} id={message.id} text={message.text} author={message.author} removeMessage={this.props.removeMessage}/>
+        <Message key={index} roomId={this.props.roomId} id={message.id} text={message.text} author={message.author} removeMessage={this.props.removeMessage} starMessage={this.props.starMessage}/>
       )
     })
   }
@@ -42,7 +42,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     subscribeToMessages: (toggle, roomId) => { dispatch(subscribeToMessages(toggle, roomId)); },
-    removeMessage: (id) => { dispatch(removeMessage(id)); },
+    removeMessage: (id, roomId) => { dispatch(removeMessage(id, roomId)); },
+    starMessage: (user, id, roomId) => { dispatch(starMessage(user, id, roomId)); },
     joinRoom: (roomId) => { dispatch(joinRoom(roomId)); },
     exitRoom: () => { dispatch(exitRoom()); },
   };

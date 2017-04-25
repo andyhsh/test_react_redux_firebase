@@ -3,12 +3,17 @@ import React, { Component } from 'react';
 class Message extends Component {
   constructor(props){
     super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleStar = this.handleStar.bind(this);
   }
 
-  handleSubmit(e) {
-    e.nativeEvent.preventDefault();
-    this.props.removeMessage(this.props.id);
+  handleDelete(e) {
+    e.preventDefault();
+    this.props.removeMessage(this.props.id, this.props.roomId);
+  }
+
+  handleStar(e) {
+    e.preventDefault();
+    this.props.starMessage('anonymous', this.props.id, this.props.roomId);
   }
 
   render() {
@@ -16,7 +21,8 @@ class Message extends Component {
       <div>
         <p>
           author: {this.props.author}, text: {this.props.text}
-          <button type='submit' onClick={this.handleSubmit}>Delete</button>
+          <button type='submit' onClick={this.handleDelete}>Delete</button>
+          <button type='submit' onClick={this.handleStar}>Star</button>
         </p>
       </div>
     );
