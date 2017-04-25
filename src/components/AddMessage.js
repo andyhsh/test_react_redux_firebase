@@ -20,7 +20,7 @@ class AddMessage extends Component {
 
   handleClick(e) {
     e.preventDefault();
-    this.props.addMessage(this.state.message, this.props.roomId);
+    this.props.addMessage(this.state.message, this.props.roomId, this.props.user.displayName);
   }
 
 
@@ -36,8 +36,14 @@ class AddMessage extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addMessage: (message, roomId) => { dispatch(addMessage(message, roomId)); },
+    addMessage: (message, roomId, user) => { dispatch(addMessage(message, roomId, user)); },
   };
 };
 
-export default connect(null, mapDispatchToProps)(AddMessage);
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddMessage);

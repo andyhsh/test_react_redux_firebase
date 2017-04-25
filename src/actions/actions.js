@@ -3,25 +3,10 @@ import firebase from './firebase';
 const firebaseDB = firebase.database();
 //const messageRef = firebaseDB.ref(`/Rooms/${roomId}`);
 
-// export function fetchMessages() {
-//   return dispatch => {
-//     messageRef.once('value', snapshot => {
-//       const fetchedMessages = snapshot.val();
-//       dispatch(fetchMessagesSuccess(fetchedMessages))
-//     })
-//   };
-// }
-//
-// function fetchMessagesSuccess(fetchedMessages) {
-//   return {
-//     type: 'FETCH_MESSAGES_SUCCESS',
-//     payload: fetchedMessages
-//   }
-// }
-
 export function subscribeToMessages(toggle, roomId) {
   return dispatch => {
-  const messageRef = firebaseDB.ref(`/rooms/${roomId}`);
+    const messageRef = firebaseDB.ref(`/rooms/${roomId}`);
+
     if (toggle === true) {
       console.log('subscribing to messages');
       messageRef.on('child_added', snapshot => {
@@ -29,7 +14,7 @@ export function subscribeToMessages(toggle, roomId) {
         const message = {
           id: snapshot.key,
           text: snapshot.val().text,
-          author: snapshot.val().author,
+          user: snapshot.val().user,
           stars: snapshot.val().stars,
           starCount: snapshot.val().starCount,
         }
@@ -65,12 +50,12 @@ export function subscribeToMessages(toggle, roomId) {
   };
 }
 // middleware to update firebase database first
-export function addMessage(message, roomId) {
+export function addMessage(message, roomId, user) {
   return dispatch => {
-  const messageRef = firebaseDB.ref(`/rooms/${roomId}`);
+    const messageRef = firebaseDB.ref(`/rooms/${roomId}`);
     messageRef.push({
       text: message,
-      author: 'anonymous',
+      user: user,
       // stars: { userId: null/true, userId: null/true ...}
       stars: { user: 'bool' },
       starCount: 0,
@@ -127,19 +112,19 @@ function sortMessageSuccess(updatedStarCountMessage) {
 
 // Star by users. Each individual user can only star a song ONCE.
 // Keep track of total stars a song has received through message.stars
-export function starMessage(user, id, roomId){
+export function starMessage(id, roomId, userId){
   return dispatch => {
     const messageRef = firebaseDB.ref(`/rooms/${roomId}`);
     messageRef.child(id).transaction(message => {
       if (message) {
         // check whether user has starred the message already
         // If the user has starred it already, "unstar" it
-        if (message.stars[user]) {
+        if (message.stars[userId]) {
           message.starCount--;
-          message.stars[user] = null;
+          message.stars[userId] = null;
         } else {
           message.starCount++;
-          message.stars[user] = true;
+          message.stars[userId] = true;
         }
       }
       return message;
@@ -171,20 +156,19 @@ export function exitRoom() {
 /* ACTIONS FOR USER REDUCER */
 export function signIn(){
   return dispatch => {
-
     const provider = new firebase.auth.GoogleAuthProvider();
-
     firebase.auth().signInWithPopup(provider).then(function(result) {
       const { uid, displayName, email } = result.user;
 
       // update firebase with signed in user details
-      firebase.database().ref(`users/${uid}`).set({
+      firebaseDB.ref(`users/${uid}`).set({
         displayName,
-        email
+        email,
+        uid
       })
       // update redux state
-      dispatch(signInSuccess(displayName));
-    }).catch(function(error) {
+      dispatch(signInSuccess({displayName, uid}));
+    }).catch(error => {
       dispatch(signInError(error.message));
     });
   }
@@ -208,7 +192,7 @@ export function signOut(){
   return dispatch => {
     firebase.auth().signOut().then(function() {
       dispatch(signOutSuccess());
-    }).catch(function(error) {
+    }).catch(error => {
       dispatch(signOutError(error.message));
     });
   }

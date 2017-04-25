@@ -14,14 +14,14 @@ class Message extends Component {
 
   handleStar(e) {
     e.preventDefault();
-    this.props.starMessage('anonymous', this.props.id, this.props.roomId);
+    this.props.starMessage(this.props.id, this.props.roomId, this.props.userId);
   }
 
   render() {
     return (
       <div>
         <p>
-          author: {this.props.author}, text: {this.props.text}
+          user: {this.props.user}, text: {this.props.text}
           <button type='submit' onClick={this.handleDelete}>Delete</button>
           <button type='submit' onClick={this.handleStar}>Star</button>
         </p>

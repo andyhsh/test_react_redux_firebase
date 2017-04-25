@@ -75,8 +75,10 @@ export const roomReducer = (state = '', action) => {
   }
 };
 
+// USER REDUCER
 const userInitialState = {
   displayName: 'Anonymous',
+  uid: '',
   isUserSignedIn: false,
   hasError: false,
   errorMessage: '',
@@ -88,7 +90,8 @@ export const userReducer = (state = userInitialState, action) => {
       return {
         ...state,
         isUserSignedIn: true,
-        displayName: action.payload,
+        displayName: action.payload.displayName,
+        uid: action.payload.uid
       }
     case 'SIGN_IN_ERROR':
       return {
